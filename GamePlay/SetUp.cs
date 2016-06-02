@@ -15,6 +15,7 @@ public class SetUp : MonoBehaviour
 	public GameObject[] resume;
 	public GameObject[] background = new GameObject[2] ;
 	public GameObject[] exit ;
+	public GameObject[] Dlight ;
 	public GameObject[] restart ;
 	public GameObject[] pause;
 	public GameObject[] options;
@@ -47,6 +48,8 @@ public void SetupObjects(int choice){
 		loadimage.enabled = false;
 		mainCamera [choice ].gameObject.SetActive (true);
 		mainCamera [(choice + 1) %2 ].gameObject.SetActive (false);
+		Dlight [choice].SetActive (true);
+		Dlight [(choice + 1) % 2].SetActive (false);
 		turn.text = "Wait";
 		graphics.gameObject.SetActive (false);
 		sound.gameObject.SetActive (false);
@@ -93,7 +96,9 @@ public void SetupObjects(int choice){
 			gameNetworkManager.waiting = true;
 			SetupObjects (GameSceneManager.choice);
 		} else {
-			SetupObjects (0);
+			GameSceneManager.choice = 0;
+			GameSceneManager.selection = "1 Player";
+			SetupObjects (GameSceneManager.choice);
 			player.gameObject.SetActive (true);
 			yield return null;
 		}

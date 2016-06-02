@@ -8,7 +8,7 @@ public class movehand1 : MonoBehaviour {
 		public LayerMask blockingLayer;//Layer on which collision will be checked.
 		private Win1 Fill;
 		public Rigidbody rb2D; 
-		private Vector3 startp = new Vector3(-26.0f,27.0f,-5.3f); //The Rigidbody2D component attached to this object.
+		private Vector3 startp = new Vector3(-23.9f,27.0f,-3.4f); //The Rigidbody2D component attached to this object.
 		private float inverseMoveTime;          //Used to make movement more efficient.
 		public int i =0, j=5;
 		public int h = 1;
@@ -47,10 +47,10 @@ public class movehand1 : MonoBehaviour {
 				if (i ==0){
 					animator.SetTrigger("fshare");
 				}
-				StartCoroutine(Move (startp.x + (i * 10), startp.y + 2, startp.z, h, render));
+				StartCoroutine(Move (startp.x + (i * 9), startp.y + 2, startp.z, h, render));
 				i = i+1;
 			} else {
-				StartCoroutine( Move (startp.x + (j * 10), startp.y + 2, startp.z + 8, h, render));
+				StartCoroutine( Move (startp.x + (j * 9), startp.y + 2, startp.z + 8, h, render));
 				j = j - 1;
 			}
 			h = h + 1;
@@ -73,7 +73,7 @@ public class movehand1 : MonoBehaviour {
 		//yield return StartCoroutine (SmoothMovement (end));
 
 		if (num > 0) {
-			points = Instantiate (pointloc, end, transform.rotation)as Rigidbody;
+			points = Instantiate (pointloc, end, pointloc.transform.rotation)as Rigidbody;
 			points.tag = "points" + (num);
 		}
 		while (counter <= 4 && num > 0){
