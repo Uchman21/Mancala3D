@@ -41,6 +41,7 @@ public class GameSelection :  NetworkBehaviour {
 		hand.i = 0;
 		hand.j = 5;
 		engage = true;
+
 		plays.NewGame(ref A,ref SeedsWon);
 		if (isInitial == true && GameSceneManager.selection == "2 players") {
 			if (isLocalPlayer) {
@@ -51,6 +52,7 @@ public class GameSelection :  NetworkBehaviour {
 		} else {
 			hand.movement (true);
 		}
+		yield return new WaitForSeconds (2f);
 		phouse [0] = NumHouseP1;
 		phouse [1] = NumHouseP2;
 		engage = false;
@@ -208,19 +210,27 @@ public class GameSelection :  NetworkBehaviour {
 		}
 
 		if (choice == 0) {
-			if (plays.CheckGame (0, ref SeedsWon) == 1)
-				setup.turn.text = "Win!";
-			else if (plays.CheckGame (0, ref SeedsWon) == 0)
-				setup.turn.text = "Lose!";
-			else
-				setup.turn.text = "Draw!";
+			if (plays.CheckGame (0, ref SeedsWon) == 1) {
+				setup.EndGame ("YOU WON!", GameSceneManager.choice);
+				PlayerPrefs.SetInt ("MW", PlayerPrefs.GetInt ("MW", 0) + 1);
+			} else if (plays.CheckGame (0, ref SeedsWon) == 0) {
+				setup.EndGame ("YOU LOSE!", GameSceneManager.choice);
+				PlayerPrefs.SetInt ("ML", PlayerPrefs.GetInt ("ML", 0) + 1);
+			} else {
+				setup.EndGame ("DRAW!", GameSceneManager.choice);
+				PlayerPrefs.SetInt ("MD", PlayerPrefs.GetInt ("MD", 0) + 1);
+			}
 		} else {
-			if (plays.CheckGame (0, ref SeedsWon) == 1)
-				setup.turn.text = "Lose!";
-			else if (plays.CheckGame (0, ref SeedsWon) == 0)
-				setup.turn.text = "Win!";
-			else
-				setup.turn.text = "Draw!";
+			if (plays.CheckGame (0, ref SeedsWon) == 1) {
+				setup.EndGame ("YOU LOSE!", GameSceneManager.choice);
+				PlayerPrefs.SetInt ("ML", PlayerPrefs.GetInt ("ML", 0) + 1);
+			} else if (plays.CheckGame (0, ref SeedsWon) == 0) {
+				setup.EndGame ("YOU WON!", GameSceneManager.choice);
+				PlayerPrefs.SetInt ("MW", PlayerPrefs.GetInt ("MW", 0) + 1);
+			} else {
+				setup.EndGame ("DRAW!", GameSceneManager.choice);
+				PlayerPrefs.SetInt ("MD", PlayerPrefs.GetInt ("MD", 0) + 1);
+			}
 		}
 		Debug.Log ("finish");
 
@@ -264,7 +274,7 @@ public class GameSelection :  NetworkBehaviour {
 		Debug.Log ("out");
 		Debug.Log (engage);
 		Debug.Log ("num player: "+Numconnection);
-		if (engage == false && isLocalPlayer && Numconnection == -1) {
+		if (engage == false && isLocalPlayer && Numconnection == -1 && !GameSceneManager.GameOver && !GameSceneManager.isPaused && !GameSceneManager.isOnOption) {
 			Debug.Log ("in");
 			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition); //Convert mouse position to raycast
 			RaycastHit hit; //Create a RaycastHit variable to store the hit data into

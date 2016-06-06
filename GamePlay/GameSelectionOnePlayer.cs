@@ -32,23 +32,25 @@ public class GameSelectionOnePlayer :  MonoBehaviour {
 	private GUIS info;
 	SetUp setup;
 	Vector3 temp;
+	private int level;
 	//NetworkView networkView;
 
 	IEnumerator reset(int NumHouseP1, int NumHouseP2){
 		hand.h = 1;
 		hand.i = 0;
 		hand.j = 5;
+		phouse [0] = NumHouseP1;
+		phouse [1] = NumHouseP2;
 		engage = true;
 		plays.NewGame(ref A,ref SeedsWon);
 		hand.movement (true);
-
-		phouse [0] = NumHouseP1;
-		phouse [1] = NumHouseP2;
+		yield return new WaitForSeconds (2f);
 		engage = false;
 		yield return null;
 	}
 	// Use this for initialization
 	void Start() {
+		level = PlayerPrefs.GetInt ("MancalaLevel", 1);
 		plays= FindObjectOfType(typeof(Player))as Player;
 		hand = FindObjectOfType (typeof(movehand1))as movehand1;
 		phand = FindObjectOfType (typeof(Playerhand))as Playerhand;
@@ -93,7 +95,7 @@ public class GameSelectionOnePlayer :  MonoBehaviour {
 						yield return new WaitForSeconds (0.3f);
 					}
 					engage = true;
-					yield return StartCoroutine (plays.Player2 (A, SeedsWon, phouse));
+					yield return StartCoroutine (plays.Player2 (A, SeedsWon, phouse,level));
 					engage =  false;
 				}
 			}
@@ -107,7 +109,7 @@ public class GameSelectionOnePlayer :  MonoBehaviour {
 						yield return new WaitForSeconds (0.3f);
 					}
 					engage = true;
-					yield return StartCoroutine (plays.Player2 (A, SeedsWon, phouse));
+					yield return StartCoroutine (plays.Player2 (A, SeedsWon, phouse,level));
 					engage = false;
 				}
 			}
@@ -140,6 +142,7 @@ public class GameSelectionOnePlayer :  MonoBehaviour {
 		setup.round.text = "Round: "+rounds.ToString ();
 		setup.player1house.text = "(" + phouse [0].ToString () + ")";
 		setup.player2house.text = "(" + phouse [1].ToString () + ")";
+		while(hand.waiting==true){yield return new WaitForSeconds(0.3f);}
 		while(phouse[0]!= 0 && phouse[1] != 0)
 		{
 			yield return StartCoroutine (WhoPlaysFirst1Player(whoplaysfirst));
@@ -174,9 +177,16 @@ public class GameSelectionOnePlayer :  MonoBehaviour {
 
 		}
 
-		if(plays.CheckGame(0,ref SeedsWon) == 1)setup.turn.text = "Win!";
-		else if(plays.CheckGame(0,ref SeedsWon) == 0) setup.turn.text = "Lose!";
-		else setup.turn.text = "Draw!";
+		if (plays.CheckGame (0, ref SeedsWon) == 1) {
+			setup.EndGame ("YOU WON!", GameSceneManager.choice);
+			PlayerPrefs.SetInt ("SW", PlayerPrefs.GetInt ("SW", 0) + 1);
+		} else if (plays.CheckGame (0, ref SeedsWon) == 0) {
+			setup.EndGame ("YOU LOSE!", GameSceneManager.choice);
+			PlayerPrefs.SetInt ("SL", PlayerPrefs.GetInt ("SL", 0) + 1);
+		} else {
+			setup.EndGame ("DRAW!", GameSceneManager.choice);
+			PlayerPrefs.SetInt ("SD", PlayerPrefs.GetInt ("SD", 0) + 1);
+		}
 		Debug.Log ("finish");
 
 	}
@@ -211,7 +221,7 @@ public class GameSelectionOnePlayer :  MonoBehaviour {
 	}
 
 	void OnMouseDown(){
-		if (engage == false) {
+		if (engage == false && !GameSceneManager.GameOver && !GameSceneManager.isPaused && !GameSceneManager.isOnOption) {
 			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition); //Convert mouse position to raycast
 			RaycastHit hit; //Create a RaycastHit variable to store the hit data into
 			if (Physics.Raycast (ray, out hit, 1000f)) { //If the user clicks the left mouse button and we hit an object with our raycast then

@@ -4,6 +4,7 @@ using System.Collections;
 
 public class OnCup : MonoBehaviour {
 	public Text GameRecord;
+	public GameObject panel;
 	public GameObject Background;
 	public Button Ok_button;
 	public GameObject singlePlayer;
@@ -12,10 +13,12 @@ public class OnCup : MonoBehaviour {
 	public Dropdown sound;
 	// Use this for initialization
 	void Start () {
-		GameRecord.text = "Single Game Record : " + "\n" + "W : " + PlayerPrefs.GetInt ("SW", 0) + 
-			" D : " + PlayerPrefs.GetInt ("SD", 0) + " L : " + PlayerPrefs.GetInt ("SL", 0) + "\n" +
-			"Multiplayer Game Record : " + "\n" + "W : " + PlayerPrefs.GetInt ("MW", 0) + " D : " + 
-			PlayerPrefs.GetInt ("MD", 0) + " L : " + PlayerPrefs.GetInt ("ML", 0);
+		GameRecord.text = "SINGLE-PLAYER RECORD : \n" +
+			"W : " + PlayerPrefs.GetInt ("SW", 0) + 
+			" D : " + PlayerPrefs.GetInt ("SD", 0) + " L : " + PlayerPrefs.GetInt ("SL", 0) +
+			"\nMULTIPLAYER RECORD : \n" + "W : " + PlayerPrefs.GetInt ("MW", 0) + " D : " + 
+			PlayerPrefs.GetInt ("MD", 0) + " L : " + PlayerPrefs.GetInt ("ML", 0)+
+			"\nRANK LEVEL : \n"+ (PlayerPrefs.GetInt ("MW", 0) + PlayerPrefs.GetInt ("MW", 0))/10;
 	}
 	
 	// Update is called once per frame
@@ -29,7 +32,7 @@ public class OnCup : MonoBehaviour {
 		Background.SetActive (true);
 		singlePlayer.SetActive (false);
 		multiPlayer.SetActive (false);
-		GameRecord.gameObject.SetActive (true);
+		panel.SetActive (true);
 		Ok_button.gameObject.SetActive (true);
 	}
 
@@ -44,7 +47,7 @@ public class OnCup : MonoBehaviour {
 		Background.SetActive (false);
 		Difficulty.gameObject.SetActive (false);
 		sound.gameObject.SetActive (false);
-		GameRecord.gameObject.SetActive (false);
+		panel.SetActive (false);
 		Ok_button.gameObject.SetActive (false);
 		singlePlayer.SetActive (true);
 		multiPlayer.SetActive (true);

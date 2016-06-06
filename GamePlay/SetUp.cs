@@ -21,7 +21,13 @@ public class SetUp : MonoBehaviour
 	public GameObject[] options;
 	public GameObject[] seed1;
 	public GameObject[] seed2;
+	public Text Outcome;
+	public Text BackgroundTitleText;
 	public GameObject[] turnposition;
+	Vector3[,] endGamePosition = new Vector3[2,2];
+	Vector3[,] restartGamePosition = new Vector3[2,2];
+	Vector3[,] endGamePositionInit = new Vector3[1,2];
+	Vector3[,] restartGamePositionInit = new Vector3[1,2];
 	public GameObject player;
 	public Text player1Seed;
 	public Text player2Seed; 
@@ -36,9 +42,22 @@ public class SetUp : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+		
 //		GameSceneManager.selection = "2 players";
 //		GameSceneManager.choice = 0;
 		//gameNetworkManager = FindObjectOfType (typeof(GameNetworkManager))as GameNetworkManager;
+		GameSceneManager.GameOver = false;
+		GameSceneManager.isPaused = false;
+		GameSceneManager.isOnOption = false;
+		endGamePosition[0,0] = new Vector3(-7.15f,-7.77f,39.9f);
+		endGamePosition [0, 1] = new Vector3 (3f, 3.1f, 1f);
+		endGamePosition[1,0] = new Vector3 (-6.8f, -7.37f, 39.9f);
+		endGamePosition [1, 1] = new Vector3 (3f, 3.1f, 1f);
+
+		restartGamePosition[0,0] = new Vector3(8.07f,-7.77f,39.9f);
+		restartGamePosition [0, 1] = new Vector3 (4f, 4f, 1f);
+		restartGamePosition[1,0] = new Vector3 (9.06f, -7.37f, 39.9f);
+		restartGamePosition [1, 1] = new Vector3 (4f, 4f, 1f);
 		StartCoroutine (NetworkPlay ());
 
 	}
@@ -63,6 +82,8 @@ public void SetupObjects(int choice){
 		background[(choice + 1) %2].SetActive (false);
 		pause[(choice + 1) %2].SetActive (false);
 		options[(choice + 1) %2].SetActive (false);
+		BackgroundTitleText.gameObject.SetActive (false);
+		Outcome.gameObject.SetActive (false);
 		position (choice);
 }
 
@@ -107,6 +128,31 @@ public void SetupObjects(int choice){
 	void Update ()
 	{
 	
+	}
+
+	//Game end
+	public void EndGame(string outcome, int choice){
+		GameSceneManager.GameOver = true;
+		background[choice].SetActive (true);
+		BackgroundTitleText.text = "GameOver";
+		BackgroundTitleText.gameObject.SetActive (true);
+		Outcome.text = outcome;
+		Outcome.gameObject.SetActive (true);
+
+		endGamePositionInit[0,0] = exit [choice].transform.localPosition;
+		endGamePositionInit [0, 1] = exit [choice].transform.localScale;
+
+		restartGamePositionInit[0,0] = restart [choice].transform.localPosition;
+		restartGamePositionInit [0, 1] = restart [choice].transform.localScale;
+
+		exit [choice].transform.localPosition = endGamePosition [choice, 0];
+		exit [choice].transform.localScale = endGamePosition [choice, 1];
+		exit [choice].SetActive (true);
+		restart [choice].transform.localPosition = restartGamePosition [choice, 0];
+		restart [choice].transform.localScale = restartGamePosition [choice, 1];
+		restart [choice].SetActive (true);
+		pause[choice].SetActive (false);
+		options[choice].SetActive (false);
 	}
 }
 

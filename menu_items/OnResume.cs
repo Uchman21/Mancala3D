@@ -24,8 +24,11 @@ public class OnResume : MonoBehaviour
 		setup.restart[choice].gameObject.SetActive (false);
 		setup.resume[choice].SetActive (false);
 		setup.background[choice].SetActive (false);
+		setup.BackgroundTitleText.gameObject.SetActive (false);
 		phand.handpoly.enabled = true;
 		hand.handpoly.enabled = true;
+		GameSceneManager.isPaused = false;
+		GameSceneManager.isOnOption = false;
 		Time.timeScale = 1;
 		optionsMenu.gameObject.SetActive (true);
 		pauseMenu.gameObject.SetActive (true);

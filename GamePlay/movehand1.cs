@@ -8,7 +8,7 @@ public class movehand1 : MonoBehaviour {
 		public LayerMask blockingLayer;//Layer on which collision will be checked.
 		private Win1 Fill;
 		public Rigidbody rb2D; 
-		private Vector3 startp = new Vector3(-23.9f,27.0f,-3.4f); //The Rigidbody2D component attached to this object.
+	private Vector3 startp = new Vector3(-23.01f,27.0f,-3.4f); //The Rigidbody2D component attached to this object.
 		private float inverseMoveTime;          //Used to make movement more efficient.
 		public int i =0, j=5;
 		public int h = 1;
@@ -50,14 +50,13 @@ public class movehand1 : MonoBehaviour {
 				StartCoroutine(Move (startp.x + (i * 9), startp.y + 2, startp.z, h, render));
 				i = i+1;
 			} else {
-				StartCoroutine( Move (startp.x + (j * 9), startp.y + 2, startp.z + 8, h, render));
+				StartCoroutine( Move (startp.x + (j * 9), startp.y + 2, startp.z + 9, h, render));
 				j = j - 1;
 			}
 			h = h + 1;
 		}
 		animator.SetTrigger("open");
-		StartCoroutine( Move (orig.x , orig.y, orig.z,0, true));
-		waiting = false;
+		StartCoroutine( Move (orig.x , orig.y, orig.z,-1, true));
 		//yield return null;
 
 	}
@@ -75,10 +74,12 @@ public class movehand1 : MonoBehaviour {
 		if (num > 0) {
 			points = Instantiate (pointloc, end, pointloc.transform.rotation)as Rigidbody;
 			points.tag = "points" + (num);
+		} else if ( num == -1){
+			waiting = false;
 		}
 		while (counter <= 4 && num > 0){
 				Debug.Log (GameSceneManager.selection);
-				shootInit (1f, num, end, render);
+				shootInit (5f, num, end, render);
 				//Destroy(Hole[j].myobj.gameObject,2f);
 				
 				//Debug.Log(Hole[j].myobj.name);

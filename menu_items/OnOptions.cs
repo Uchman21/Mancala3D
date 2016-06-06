@@ -20,10 +20,13 @@ public class OnOptions : MonoBehaviour {
 	public void OnMouseDown () {
 		//Application.LoadLevelAdditive("settingsmenu");
 		choice = GameSceneManager.choice;
+		GameSceneManager.isOnOption = true;
 		setup.exit[choice].gameObject.SetActive (true);
 		setup.restart[choice].gameObject.SetActive (true);
 		setup.resume[choice].SetActive (true);
 		setup.background[choice].SetActive (true);
+		setup.BackgroundTitleText.text = "OPTIONS";
+		setup.BackgroundTitleText.gameObject.SetActive (true);
 		phand.handpoly.enabled = false;
 		hand.handpoly.enabled = false;
 		pauseMenu.gameObject.SetActive (false);

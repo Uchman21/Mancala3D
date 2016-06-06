@@ -9,6 +9,9 @@ public class GameSceneManager : MonoBehaviour {
 	public static int choice;
 	public static int Numconnection;
 	public static bool JoinSuccess;
+	public static bool GameOver;
+	public static bool isPaused;
+	public static bool isOnOption;
 	#endregion
 	
 }

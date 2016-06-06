@@ -4,6 +4,7 @@ using System.Collections;
 
 public class OnHelp : MonoBehaviour {
 	public Text GameRecord;
+	public GameObject panel;
 	public GameObject Background;
 	public Button Ok_button;
 	public GameObject singlePlayer;
@@ -21,17 +22,17 @@ public class OnHelp : MonoBehaviour {
 
 	void OnMouseDown () {
 		GameRecord.text = Mancala_Rules;
-		GameRecord.fontSize = 13;
+		//GameRecord.fontSize = 13;
 		Background.SetActive (true);
 		singlePlayer.SetActive (false);
 		multiPlayer.SetActive (false);
-		GameRecord.gameObject.SetActive (true);
+		panel.SetActive (true);
 		Ok_button.gameObject.SetActive (true);
 	}
 
 	public void Clear() {
 		Background.SetActive (false);
-		GameRecord.gameObject.SetActive (false);
+		panel.SetActive (false);
 		Ok_button.gameObject.SetActive (false);
 		singlePlayer.SetActive (true);
 		multiPlayer.SetActive (true);

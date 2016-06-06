@@ -4,36 +4,32 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI; 
 using System.Collections.Generic;
 
-public class OnSound : MonoBehaviour {
-	AudioSource audioSource;
-	public GameObject OtherMenu;
+public class OnDifficulty : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
-		audioSource = UnityEngine.Object.FindObjectOfType<AudioSource>();
-		if (PlayerPrefs.GetInt ("MancalaSound", 1) == 1) {
-			audioSource.UnPause();
-		} else {
-			audioSource.Pause();
-		}
 	}
 
 
 	public void Beauty(int value){
-		//QualitySettings.SetQualityLevel = QualityLevel.Beautiful;
 		if (value == 0) {
-			PlayerPrefs.SetInt ("MancalaSound", 1);
-			audioSource.UnPause();
+			PlayerPrefs.SetInt ("MancalaLevel", 1);
+		} else if (value == 1) {
+			PlayerPrefs.SetInt ("MancalaLevel", 2);
+		} else if (value == 2) {
+			PlayerPrefs.SetInt ("MancalaLevel", 3);
+		} else if (value == 3) {
+			PlayerPrefs.SetInt ("MancalaLevel", 4);
 		} else {
-			PlayerPrefs.SetInt ("MancalaSound", 0);
-			audioSource.Pause();
-		}
-		OtherMenu.SetActive (true);
+			PlayerPrefs.SetInt ("MancalaLevel", 5);
+		} 
+
 	}
 
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
+
 
 	void Awake() 
 	{ 
@@ -45,7 +41,7 @@ public class OnSound : MonoBehaviour {
 			evtrig.triggers = new List<EventTrigger.Entry>(); 
 		evtrig.triggers.Add(entry); 
 	}
-	
+
 	public void Fix(BaseEventData eventData) 
 	{ 
 		// If paused, remove the spawned dropdown 
@@ -56,9 +52,4 @@ public class OnSound : MonoBehaviour {
 				Destroy(tr.gameObject); 
 		} 
 	} 
-
-	public void OnPointerDown(PointerEventData eventData) {
-		Debug.Log ("hereh");
-		OtherMenu.SetActive (false);
-	}
 }

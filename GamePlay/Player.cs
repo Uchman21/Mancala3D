@@ -11,7 +11,7 @@ public class Player : MonoBehaviour {
 
 	private GUIS info;
 	private int getarea;
-	private int DrawCount =1; 
+	private static int DrawCount; 
 	public float timer=0f;
 	private int levels;
 	private int boxmax=0;
@@ -66,6 +66,7 @@ public class Player : MonoBehaviour {
 
 	public void NewGame(ref int []A,ref int []SeedsWon)                //new game - put 4 pearls in each hole 2 x 6 
 	{
+		DrawCount =0;
 		for(int i=0; i<12;i++)
 		{
 			A[i]=4;
@@ -376,7 +377,7 @@ public IEnumerator GamePlay(int player, int box, int []GameHoles, int []SeedsWon
 			if(((SeedsWon[0] + SeedsWon[1]) == 40 ))    //Max number of times to be considered before the game ends =10
 			{
 				DrawCount++;
-				if (DrawCount >= 10) return 10;
+				if (DrawCount >= 20) return 10;
 				
 			}else if((SeedsWon[0] + SeedsWon[1]) > 40 && (SeedsWon[player] > SeedsWon[(player+1)%2]))   // If Player has higher seeds
 			{
@@ -589,7 +590,7 @@ public	bool CanPlay(int player,ref int []GameHoles,ref int []phouse)
 
 	int Betaplay(ref int []GameHoles,ref int []WonSeeds,int player,int levels, int mlevel, int alpha, int beta, int[] OwnedHoles){
 		if (levels < 0 || ((WonSeeds [0] + WonSeeds [1]) >= 44)) {
-			return WonSeeds [player];
+			return (WonSeeds [player] + levels/2);
 		} else {
 			int value = Alpha(GameHoles,WonSeeds,player,(levels - 1),mlevel,alpha, beta,OwnedHoles);
 			return value;
@@ -605,12 +606,20 @@ public	bool CanPlay(int player,ref int []GameHoles,ref int []phouse)
 		int []tempWonSeeds = new int[2];
 		copyGameHoles (ref GameHoles,ref tempGameHoles);
 		copyWonSeeds (ref WonSeeds, ref tempWonSeeds);
-		for (int i=0; i < OwnedHoles[(player+1)%2]; i++) {
-			if (Possible((oppstarthouse + i), GameHoles) && beta > alpha){
-				GamePlayD((player+1)%2,oppstarthouse + i,ref GameHoles, ref WonSeeds,ref OwnedHoles);
-				beta = Mathf.Min(beta,Betaplay(ref GameHoles, ref WonSeeds,player,levels,mlevel,alpha,beta,OwnedHoles));
+		if (CanPlay ((player + 1) % 2,ref GameHoles,ref OwnedHoles)) {
+			for (int i = 0; i < OwnedHoles [(player + 1) % 2]; i++) {
+				if (Possible ((oppstarthouse + i), GameHoles) && beta > alpha) {
+					GamePlayD ((player + 1) % 2, oppstarthouse + i, ref GameHoles, ref WonSeeds, ref OwnedHoles);
+					beta = Mathf.Min (beta, Betaplay (ref GameHoles, ref WonSeeds, player, levels, mlevel, alpha, beta, OwnedHoles));
+				}
+				copyGameHoles (ref tempGameHoles, ref GameHoles);
+				copyWonSeeds (ref tempWonSeeds, ref WonSeeds);
 			}
-			copyGameHoles (ref tempGameHoles,ref GameHoles);
+		}else if(CanPlay(player,ref GameHoles,ref OwnedHoles)) {
+			if (beta > alpha) {
+					beta = Mathf.Min (beta, Betaplay (ref GameHoles, ref WonSeeds, player, levels, mlevel, alpha, beta, OwnedHoles));
+				}
+			copyGameHoles (ref tempGameHoles, ref GameHoles);
 			copyWonSeeds (ref tempWonSeeds, ref WonSeeds);
 		}
 		return beta;
@@ -618,7 +627,7 @@ public	bool CanPlay(int player,ref int []GameHoles,ref int []phouse)
 
 	int Alphaplay(ref int []GameHoles,ref int []WonSeeds,int player,int levels, int mlevel,int alpha, int beta, int[] OwnedHoles, ref int starthouse){
 		if (levels < 0 || ((WonSeeds [0] + WonSeeds [1]) >= 44)) {
-			return WonSeeds [player];
+			return (WonSeeds [player]  + levels/2);
 		} else {
 			int value = Beta(GameHoles,WonSeeds,player,levels,mlevel,alpha,beta,OwnedHoles, starthouse);
 			return value;
@@ -633,18 +642,26 @@ public	bool CanPlay(int player,ref int []GameHoles,ref int []phouse)
 		copyGameHoles (ref GameHoles,ref tempGameHoles);
 		copyWonSeeds (ref WonSeeds, ref tempWonSeeds);
 		int starthouse = OwnedHoles[0];
-		for (int i=0; i < OwnedHoles[1]; i++) {
-			M = alpha;
-			if (Possible((starthouse + i),GameHoles) && beta > alpha){
-				GamePlayD(player,(starthouse + i),ref GameHoles,ref WonSeeds,ref OwnedHoles);
-				alpha = Mathf.Max(alpha,Alphaplay(ref GameHoles, ref WonSeeds,player,levels,mlevel,alpha,beta,OwnedHoles,ref starthouse));
-				if(levels == mlevel){
-					if (alpha > M){
-						boxmax = starthouse + i;
+		if (CanPlay (player,ref GameHoles,ref OwnedHoles)) {
+			for (int i = 0; i < OwnedHoles [1]; i++) {
+				M = alpha;
+				if (Possible ((starthouse + i), GameHoles) && beta > alpha) {
+					GamePlayD (player, (starthouse + i), ref GameHoles, ref WonSeeds, ref OwnedHoles);
+					alpha = Mathf.Max (alpha, Alphaplay (ref GameHoles, ref WonSeeds, player, levels, mlevel, alpha, beta, OwnedHoles, ref starthouse));
+					if (levels == mlevel) {
+						if (alpha > M) {
+							boxmax = starthouse + i;
+						}
 					}
 				}
+				copyGameHoles (ref tempGameHoles, ref GameHoles);
+				copyWonSeeds (ref tempWonSeeds, ref WonSeeds);
 			}
-			copyGameHoles (ref tempGameHoles,ref GameHoles);
+		} else if(CanPlay((player+ 1)%2,ref GameHoles,ref OwnedHoles)) {
+			if (beta > alpha) {
+				alpha = Mathf.Max (alpha, Alphaplay (ref GameHoles, ref WonSeeds, player, levels, mlevel, alpha, beta, OwnedHoles, ref starthouse));
+			}
+			copyGameHoles (ref tempGameHoles, ref GameHoles);
 			copyWonSeeds (ref tempWonSeeds, ref WonSeeds);
 		}
 		return alpha;
@@ -668,7 +685,7 @@ public	bool CanPlay(int player,ref int []GameHoles,ref int []phouse)
 
 	}
 
-  public IEnumerator Player1( int []A, int []Seeds, int []OwnedHoles)
+  public IEnumerator Player1( int []A, int []Seeds, int []OwnedHoles,int level)
 	{
 		//while(finalwait==false){yield return new WaitForSeconds(0.3f);}
 		//finalwait=false;
@@ -687,7 +704,7 @@ public	bool CanPlay(int player,ref int []GameHoles,ref int []phouse)
 			yield return null;
 	}
 	
-	public IEnumerator Player2( int []A, int []Seeds,  int []OwnedHoles)
+	public IEnumerator Player2( int []A, int []Seeds,  int []OwnedHoles, int level)
 	{
 
 		/*int ranc=0;

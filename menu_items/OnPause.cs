@@ -26,8 +26,11 @@ public class OnPause : MonoBehaviour {
 		setup.background[choice].SetActive (true);
 		setup.graphics.gameObject.SetActive (true);
 		setup.sound.gameObject.SetActive (true);
+		setup.BackgroundTitleText.text = "PAUSED";
+		setup.BackgroundTitleText.gameObject.SetActive (true);
 		phand.handpoly.enabled = false;
 		hand.handpoly.enabled = false;
+		GameSceneManager.isPaused = true;
 		optionsMenu.gameObject.SetActive (false);
 		Time.timeScale = 0;
 
