@@ -2,19 +2,19 @@
 using System.Collections;
 
 public class OnFb : MonoBehaviour {
-	public string AppID = "1754695884814244";
-	public string Link = "https://play.google.com/store/apps/details?id=com.ballwall.afap";
+	private string AppID = "1754695884814244";
+	private string Link = "https://play.google.com/store/apps/details?id=com.ballwall.afap";
 	// The picture's URL and the picture must be at least 200px by 200px.
-	public string Picture = "http://images.clipartpanda.com/smiley-face-clip-art-thumbs-up-large-Smiley-Face-making-Thumbs-Up-0-16636.png";
+	private string Picture = "http://www.giniprox.com/Mancala3D/title.jpg";
 
 	// The name of your app or game.
-	public string Name = "Mancala3D";
+	private string Name = "Mancala3D";
 
 	// The caption of your game or app.
-	public string Caption;
+	private string Caption;
 
 	// The description of your game or app.
-	public string Description = "Enjoy this free game! Challenge yourself and your friends in this great African game.";
+	private string Description = "Enjoy this great game! Challenge yourself and friends.";
 
 
 	void Awake() {
@@ -30,7 +30,7 @@ public class OnFb : MonoBehaviour {
 	public void FacebookShare(){
 		Application.OpenURL("https://www.facebook.com/dialog/feed?"+
 			"app_id="+AppID+
-			"&link="+Link+
+//			"&link="+Link+
 			"&picture="+Picture+
 			"&name="+SpaceHere(Name)+
 			"&caption="+SpaceHere(Caption)+

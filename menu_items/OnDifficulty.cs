@@ -10,7 +10,7 @@ public class OnDifficulty : MonoBehaviour {
 	}
 
 
-	public void Beauty(int value){
+	public void OnValueChange(int value){
 		if (value == 0) {
 			PlayerPrefs.SetInt ("MancalaLevel", 1);
 		} else if (value == 1) {

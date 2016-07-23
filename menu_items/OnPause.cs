@@ -20,8 +20,6 @@ public class OnPause : MonoBehaviour {
 
 	public void OnMouseDown () {
 		choice = GameSceneManager.choice;
-//		setup.exit[choice].gameObject.SetActive (true);
-//		setup.restart[choice].gameObject.SetActive (true);
 		setup.resume[choice].SetActive (true);
 		setup.background[choice].SetActive (true);
 		setup.graphics.gameObject.SetActive (true);

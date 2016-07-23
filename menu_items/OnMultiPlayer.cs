@@ -13,7 +13,7 @@ public class OnMultiPlayer : MonoBehaviour {
 	public void OnMouseDown () {
 		loadObject.LoadingText.gameObject.SetActive (true);
 		loadObject.LoadingBackg.gameObject.SetActive (true);
-		GameSceneManager.selection = "2 players";
+		GameSceneManager.selection = "2 Players";
 		SceneManager.LoadScene("Mancala");
 	}
 	

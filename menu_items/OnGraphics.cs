@@ -18,18 +18,9 @@ public class OnGraphics : MonoBehaviour {
 			Screen.SetResolution (640, 480, true);
 			setup.position(choice);
 		} else if (value == 1) {
-			Screen.SetResolution (720, 450, true);
-			setup.position(choice);
-		} else if (value == 2) {
-			Screen.SetResolution (800, 600, true);
-			setup.position(choice);
-		} else if (value == 3) {
-			Screen.SetResolution (1024, 768, true);
-			setup.position(choice);
-		} else if (value == 4) {
 			Screen.SetResolution (1280, 800, true);
 			setup.position(choice);
-		} else if (value == 5) {
+		}else if (value == 2) {
 			Screen.SetResolution (1440, 900, true);
 			setup.position(choice);
 		} else {

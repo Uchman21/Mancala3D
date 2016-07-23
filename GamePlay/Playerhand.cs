@@ -3,19 +3,15 @@ using System.Collections;
 
 public class Playerhand : MonoBehaviour {
 	
-	public float moveTime = 0.005f;           //Time it will take object to move, in seconds.
+	public float moveTime = 0.01f;           //Time it will take object to move, in seconds.
 	public LayerMask blockingLayer;//Layer on which collision will be checked.
-	private Win1 Fill;
 	public Rigidbody rb2D; 
 	public Rigidbody startp; //The Rigidbody2D component attached to this object.
 	private float inverseMoveTime;          //Used to make movement more efficient.
 	public float timer=0f;
 	public Rigidbody stone;
 	public Rigidbody pointloc;
-	//public float timer=0f;
 	public int count=0;
-	private Animator animator; 
-	//	public Vector3 SPosition = new Vector3(-39,0,0);
 	private Rigidbody myobj;
 	public Vector3 targetPosition;
 	public Rigidbody points;
@@ -64,11 +60,8 @@ public class Playerhand : MonoBehaviour {
 
 	public IEnumerator JMove (float xDir, float yDir, float zDir)
 	{
-		//handpoly.enabled = true;
 		// Calculate end position based on the direction parameters passed in when calling Move.
 		Vector3 end = new Vector3 (xDir, yDir, zDir);
-		//Vector3 end1 = new Vector3 (xDir, yDir, zDir + 5 );
-		//yield return StartCoroutine (SmoothMovement (end1));
 		//If nothing was hit, start SmoothMovement co-routine passing in the Vector2 end as destination
 		yield return StartCoroutine (SmoothMovement (end));
 
@@ -101,15 +94,9 @@ public class Playerhand : MonoBehaviour {
 	
 	public void shoot (float h,int num) {
 		
-		//Sposition = new Vector3(0.8,0,2);
 		myobj = Instantiate(stone,transform.position,transform.rotation)as Rigidbody;
-		myobj.velocity =transform.InverseTransformDirection(new Vector3(0,0,h));
+		myobj.velocity =transform.InverseTransformDirection(new Vector3(0,-5,h*4));
 		myobj.tag="stone"+num;
-		//Debug.Log ("clicked");
-		//Destroy(myobj.gameObject,3);
 	}
-
-
-	
 	
 }

@@ -6,28 +6,20 @@ using System.Collections.Generic;
 
 public class OnSound : MonoBehaviour {
 	AudioSource audioSource;
-	public GameObject OtherMenu;
 	// Use this for initialization
 	void Start () {
 		audioSource = UnityEngine.Object.FindObjectOfType<AudioSource>();
-		if (PlayerPrefs.GetInt ("MancalaSound", 1) == 1) {
-			audioSource.UnPause();
-		} else {
-			audioSource.Pause();
-		}
 	}
 
 
-	public void Beauty(int value){
-		//QualitySettings.SetQualityLevel = QualityLevel.Beautiful;
+	public void OnValueChange(int value){
 		if (value == 0) {
-			PlayerPrefs.SetInt ("MancalaSound", 1);
-			audioSource.UnPause();
-		} else {
 			PlayerPrefs.SetInt ("MancalaSound", 0);
 			audioSource.Pause();
+		} else {
+			PlayerPrefs.SetInt ("MancalaSound", 1);
+			audioSource.UnPause();
 		}
-		OtherMenu.SetActive (true);
 	}
 
 	// Update is called once per frame
@@ -57,8 +49,5 @@ public class OnSound : MonoBehaviour {
 		} 
 	} 
 
-	public void OnPointerDown(PointerEventData eventData) {
-		Debug.Log ("hereh");
-		OtherMenu.SetActive (false);
-	}
+
 }
